@@ -8,6 +8,8 @@
     --text: #1F2346;
     --white: #FFFFFF;
     --violet: #8e2de2;
+    --background: #1C1C1C;
+    
   }
   
   * {
@@ -73,7 +75,12 @@
     margin: 0 auto;
    
   }
-
+  .logo2 {
+    height: 10rem;
+    width: 100%;
+    margin-bottom: -3rem;
+   
+  }
 
 .logo {
     color: var(--secondary);

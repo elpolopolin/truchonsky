@@ -1,8 +1,11 @@
 import React from 'react';
-
+import Navbar from '../components/Navbar/Navbar';
 const Home = () => (
-  <div>
-    <h2>Home</h2>
+  <div className=''>
+  < Navbar />
+    <div className='container'>
+      <img className='imggrande' src='' />
+    </div>
   </div>
 );
 

@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
-
+import logo from "./login/assets/logo4.png"
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -43,11 +43,12 @@ const Signup = () => {
 
   return (
     <div className='login'>
+      {error && <div className="error-message">{error}</div>} 
       <form className="my-form" onSubmit={handleSignup}>
 
       <div className="login-welcome-row">
             <a href="#" title="Logo">
-            
+            <Link to="/">   <img src={logo} alt="Logo" className="logo2" /> </Link>
             </a>
         </div>
 
@@ -81,7 +82,7 @@ const Signup = () => {
         </div>
 
       </form>
-      {error && <div className="error-message">{error}</div>} 
+      
     </div>
   );
 };
