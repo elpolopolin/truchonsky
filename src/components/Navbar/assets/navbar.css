@@ -125,6 +125,7 @@ body {
     transform: rotate(0.5turn);
 }
 
+
 .navigation>li:hover>button {
     color: var(--primary);
 }
@@ -152,7 +153,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    padding-top: 5rem;
+    padding-top: 4rem;
 }
 
 .dropdown {
@@ -167,14 +168,6 @@ body {
     animation: fadeIn 0.2s ease-in-out;
 }
 
-.list-items-with-description {
-    list-style-type: none;
-    display: grid;
-    width: 100%;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding: 0.75rem;
-}
 
 .list-items-with-description li {
     display: flex;
@@ -280,6 +273,11 @@ body {
     background-color: transparent;
 }
 
+.jai{
+    display: none;
+}
+
+
 
 @media (max-width: 44rem) {
     .hide {
@@ -313,4 +311,37 @@ body {
         stroke: var(--gray-menu-button);
         width: 1.5rem;
     }
+    .burguermenuDropdown {
+        display: none;
+        margin-top: 150px;
+        border: 1px solid var(--gray-border);
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        gap: 2rem;
+        animation: fadeIn 0.2s ease-in-out;
+        z-index: 2;
+        border-radius: 0.5rem;
+    }
+    .burguermenuDropdown {
+        display: none;
+        margin-top: 150px;
+        border: 1px solid var(--gray-border);
+        padding: 0.5rem;
+        width: 100%;
+        display: flex;
+        gap: 2rem;
+        animation: fadeIn 0.2s ease-in-out;
+        z-index: 2;
+        border-radius: 0.5rem;
+    }
+    
+    /* Agrega la clase show para mostrar el menú desplegable */
+    .burguermenuDropdown.show {
+        display: flex;
+    }
+    
+    
 }
+
+

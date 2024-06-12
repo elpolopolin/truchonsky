@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-
-
 
 const VerifyAccount = () => {
   const [otp, setOtp] = useState('');
@@ -13,10 +11,11 @@ const VerifyAccount = () => {
   const userId = new URLSearchParams(location.search).get('id');
   const { logout, verifyAuth } = useAuth();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/verifyOTP', {
+      const response = await axios.post('http://192.168.0.119:4000/verifyOTP', {
         userId,
         otp,
       });
@@ -33,7 +32,7 @@ const VerifyAccount = () => {
 
   const handleResendOTP = async () => {
     try {
-      const response = await axios.post('http://localhost:4000/resendOTP', {
+      const response = await axios.post('http://192.168.0.119:4000/resendOTP', { // corregir esto logica de que solo el usuario mismo se pueda reenviar los cosos si esta logeado.
         userId,
       });
       console.log(response.data);

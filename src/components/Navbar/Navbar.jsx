@@ -1,127 +1,159 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { Link } from 'react-router-dom';
 import './assets/navbar.css'
+import { useAuth } from '../../contexts/AuthContext';
+import axios from 'axios';
 
 const Navbar = () => {
+  const [userData, setUserData] = useState(null);
+  const { isAuthenticated, verifyAuthSimple } = useAuth();
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+        const response = await axios.get('http://192.168.0.119:4000/api/userData', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setUserData(response.data.user);
+        console.log(response.data.user);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchUserData();
+    } else {
+      setUserData(null);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    verifyAuthSimple();
+  }, [verifyAuthSimple]);
+
+
   return (
     <header className="header">
       <div className="menu__wrapper">
         <div className="menu__bar">
           <Link to="/" title="Home" aria-label="home" className="logo">
-            <img src="http://localhost:3000/img/logowhite.png" alt="logo" />
+            <img src="http://192.168.0.119:3000/img/logowhite.png" alt="logo" />
           </Link>
           <nav>
             <ul className="navigation hide">
-              <li>
-                <button type="button">
-                  Product
-                  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16">
-                    <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
-                  </svg>
-                </button>
-                <div className="dropdown__wrapper">
-                  <div className="dropdown">
-                    <ul className="list-items-with-description">
-                      <li>
-                        <div className="icon-wrapper">
-                          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.18625 8.66531H19.5035V15.331H5.18625V8.66531Z M4 17.0007C4 16.0804 4.7461 15.3343 5.66645 15.3343H18.9984C19.9187 15.3343 20.6648 16.0804 20.6648 17.0007V20.3335C20.6648 21.2539 19.9187 22 18.9984 22H5.66646C4.7461 22 4 21.2539 4 20.3335V17.0007Z M4 3.66646C4 2.7461 4.7461 2 5.66645 2H18.9984C19.9187 2 20.6648 2.7461 20.6648 3.66645V6.99926C20.6648 7.91962 19.9187 8.66572 18.9984 8.66572H5.66646C4.7461 8.66572 4 7.91962 4 6.99926V3.66646Z" stroke="currentColor"></path>
-                          </svg>
-                        </div>
-                        <div className="item-title">
-                          <h3>Database</h3>
-                          <p>Fully portable Postgres database</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon-wrapper">
-                          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.03305 15.8071H12.7252M5.03305 15.8071V18.884H12.7252V15.8071M5.03305 15.8071V12.7302H12.7252V15.8071M15.0419 8.15385V5.07692C15.0419 3.37759 13.6643 2 11.965 2C10.2657 2 8.88814 3.37759 8.88814 5.07692V8.15385M5 11.2307L5 18.9231C5 20.6224 6.37757 22 8.07689 22H15.769C17.4683 22 18.8459 20.6224 18.8459 18.9231V11.2307C18.8459 9.53142 17.4683 8.15385 15.769 8.15385L8.07689 8.15385C6.37757 8.15385 5 9.53142 5 11.2307Z" stroke="currentColor"></path>
-                          </svg>
-                        </div>
-                        <div className="item-title">
-                          <h3>Authentication</h3>
-                          <p>User Management out of the box</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon-wrapper">
-                          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.4997 12.1386V9.15811L14.8463 3.53163H6.43717C5.57423 3.53163 4.87467 4.23119 4.87467 5.09413V9.78087M20.4447 9.13199L14.844 3.53125L14.844 7.56949C14.844 8.43243 15.5436 9.13199 16.4065 9.13199L20.4447 9.13199ZM7.12729 9.78087H4.83398C3.97104 9.78087 3.27148 10.4804 3.27148 11.3434V19.1559C3.27148 20.8818 4.67059 22.2809 6.39648 22.2809H18.8965C20.6224 22.2809 22.0215 20.8818 22.0215 19.1559V13.7011C22.0215 12.8381 21.3219 12.1386 20.459 12.1386H10.8032C10.3933 12.1386 9.99969 11.9774 9.70743 11.6899L8.22312 10.2296C7.93086 9.94202 7.53729 9.78087 7.12729 9.78087Z" stroke="currentColor"></path>
-                          </svg>
-                        </div>
-                        <div className="item-title">
-                          <h3>Storage</h3>
-                          <p>Serverless storage for any media</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon-wrapper">
-                          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.6594 21.8201C8.10788 22.5739 9.75418 23 11.5 23C17.299 23 22 18.299 22 12.5C22 10.7494 21.5716 9.09889 20.8139 7.64754M16.4016 3.21191C14.9384 2.43814 13.2704 2 11.5 2C5.70101 2 1 6.70101 1 12.5C1 14.287 1.44643 15.9698 2.23384 17.4428M2.23384 17.4428C1.81058 17.96 1.55664 18.6211 1.55664 19.3416C1.55664 20.9984 2.89979 22.3416 4.55664 22.3416C6.21349 22.3416 7.55664 20.9984 7.55664 19.3416C7.55664 17.6847 6.21349 16.3416 4.55664 16.3416C3.62021 16.3416 2.78399 16.7706 2.23384 17.4428ZM21.5 5.64783C21.5 7.30468 20.1569 8.64783 18.5 8.64783C16.8432 8.64783 15.5 7.30468 15.5 5.64783C15.5 3.99097 16.8432 2.64783 18.5 2.64783C20.1569 2.64783 21.5 3.99097 21.5 5.64783ZM18.25 12.5C18.25 16.2279 15.2279 19.25 11.5 19.25C7.77208 19.25 4.75 16.2279 4.75 12.5C4.75 8.77208 7.77208 5.75 11.5 5.75C15.2279 5.75 18.25 8.77208 18.25 12.5Z" stroke="currentColor"></path>
-                          </svg>
-                        </div>
-                        <div className="item-title">
-                          <h3>Edge Functions</h3>
-                          <p>Deploy code globally on the edge</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon-wrapper">
-                          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.15928 1.94531V5.84117M6.24345 5.84117L2.91385 2.40977M6.24345 8.53673H2.4248M16.7998 16.496L21.9988 15.2019C22.7217 15.022 22.8065 14.0285 22.1246 13.7286L9.73411 8.28034C9.08269 7.99391 8.41873 8.65652 8.70383 9.30851L14.0544 21.5445C14.3518 22.2247 15.341 22.1456 15.5266 21.4269L16.7998 16.496Z" stroke="currentColor"></path>
-                          </svg>
-                        </div>
-                        <div className="item-title">
-                          <h3>Realtime</h3>
-                          <p>Synchronize and broadcast events</p>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="icon-wrapper">
-                          <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.9983 11.4482V21.7337M11.9983 11.4482L21.0732 6.17699M11.9983 11.4482L2.92383 6.17723M2.92383 6.17723V12.4849M2.92383 6.17723V6.1232L8.35978 2.9657M21.0736 12.54V6.1232L15.6376 2.9657M17.7247 18.6107L11.9987 21.9367L6.27265 18.6107" stroke="currentColor"></path>
-                          </svg>
-                        </div>
-                        <div className="item-title">
-                          <h3>Vector</h3>
-                          <p>AI toolkit to manage embeddings</p>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
+              
               <li>
                 <a href="#devs" title="Developers">
-                  Developers
+                  Productos
                 </a>
               </li>
               <li>
                 <a href="#pricing" title="Pricing">
-                  Pricing
+                  Ofertas
                 </a>
               </li>
               <li>
                 <a href="#docs" title="Docs">
-                  Docs
+                  Ayuda
                 </a>
               </li>
               <li>
                 <a href="#blog" title="Blog">
-                  Blog
+                  SobreNosotros
                 </a>
               </li>
+
+              
+
             </ul>
           </nav>
         </div>
         <div className="action-buttons hide">
           
-          <Link to="/login" className='secondary' > Sign in</Link>
+        {userData ? (
+          <ul className='navigation '>
+            <li>
+          <button type="button" className=''>
+           <a>{userData[0].username} </a>
+            <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16">
+              <path d="M12.78 5.22a.749.749 0 0 1 0 1.06l-4.25 4.25a.749.749 0 0 1-1.06 0L3.22 6.28a.749.749 0 1 1 1.06-1.06L8 8.939l3.72-3.719a.749.749 0 0 1 1.06 0Z"></path>
+            </svg>
+          </button>
+          <div className="dropdown__wrapper">
+            <div className="dropdown">
+              <ul className="list-items-with-description">
+               
+                <li>
+                  <div className="icon-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.5 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6.5-6v-5.5c0-3.07-2.13-5.64-5-6.32V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5v.68c-2.87.68-5 3.25-5 6.32V16l-2 2v1h17v-1l-2-2z"></path><path d="M0 0h24v24H0z" fill="none"></path></g></svg>
+                  </div>
+                  <div className="item-title">
+                    <h3>Notifications</h3>
+                    <p>0 Notifications</p>
+                  </div>
+                </li>
+              
+                <li>
+                  <div className="icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </div>
+                  <div className="item-title">
+                    <h3>Cart</h3>
+                    <p>See your cart</p>
+                  </div>
+                </li>
+
+                <li>
+                <div className="icon-wrapper">
+                              <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="#ffffff">
+                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                      <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
+                      <g id="SVGRepo_iconCarrier">
+                        <title>profile_round [#1342]</title>
+                        <desc>Created with Sketch.</desc>
+                        <defs></defs>
+                        <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                          <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -2159.000000)" fill="#ffffff">
+                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                              <path d="M100.562548,2016.99998 L87.4381713,2016.99998 C86.7317804,2016.99998 86.2101535,2016.30298 86.4765813,2015.66198 C87.7127655,2012.69798 90.6169306,2010.99998 93.9998492,2010.99998 C97.3837885,2010.99998 100.287954,2012.69798 101.524138,2015.66198 C101.790566,2016.30298 101.268939,2016.99998 100.562548,2016.99998 M89.9166645,2004.99998 C89.9166645,2002.79398 91.7489936,2000.99998 93.9998492,2000.99998 C96.2517256,2000.99998 98.0830339,2002.79398 98.0830339,2004.99998 C98.0830339,2007.20598 96.2517256,2008.99998 93.9998492,2008.99998 C91.7489936,2008.99998 89.9166645,2007.20598 89.9166645,2004.99998 M103.955674,2016.63598 C103.213556,2013.27698 100.892265,2010.79798 97.837022,2009.67298 C99.4560048,2008.39598 100.400241,2006.33098 100.053171,2004.06998 C99.6509769,2001.44698 97.4235996,1999.34798 94.7348224,1999.04198 C91.0232075,1998.61898 87.8750721,2001.44898 87.8750721,2004.99998 C87.8750721,2006.88998 88.7692896,2008.57398 90.1636971,2009.67298 C87.1074334,2010.79798 84.7871636,2013.27698 84.044024,2016.63598 C83.7745338,2017.85698 84.7789973,2018.99998 86.0539717,2018.99998 L101.945727,2018.99998 C103.221722,2018.99998 104.226185,2017.85698 103.955674,2016.63598" id="profile_round-[#1342]"></path>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg> 
+                  </div>
+                  <div className="item-title">
+                    <h3>Profile</h3>
+                    <p>Manage your profile</p>
+                  </div>
+                </li>
+                
+                <li>
+                  <div className="icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6 3C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H17C17.5523 21 18 20.5523 18 20C18 19.4477 17.5523 19 17 19H6C5.44772 19 5 18.5523 5 18V6C5 5.44772 5.44772 5 6 5H17C17.5523 5 18 4.55228 18 4C18 3.44772 17.5523 3 17 3H6ZM15.7071 7.29289C15.3166 6.90237 14.6834 6.90237 14.2929 7.29289C13.9024 7.68342 13.9024 8.31658 14.2929 8.70711L16.5858 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H16.5858L14.2929 15.2929C13.9024 15.6834 13.9024 16.3166 14.2929 16.7071C14.6834 17.0976 15.3166 17.0976 15.7071 16.7071L19.7071 12.7071C20.0976 12.3166 20.0976 11.6834 19.7071 11.2929L15.7071 7.29289Z" fill="#ffffff"></path> </g></svg>
+                  </div>
+                  <div className="item-title">
+                    <h3>Logout</h3>
+                    <p>AI toolkit to manage embeddings</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+            </ul>
+          ) : (
+            <Link to="/login" className='secondary'>Sign in</Link>
+          )}
           
         </div>
-        <button aria-label="Open menu" className="burger-menu" type="button">
-          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-menu-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <button aria-label="Open menu" className="burger-menu" type="button" onClick={() => setMenuVisible(!menuVisible)}>
+          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-menu-2" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M4 6l16 0" />
             <path d="M4 12l16 0" />
@@ -129,6 +161,7 @@ const Navbar = () => {
           </svg>
         </button>
       </div>
+     
     </header>
   );
 };

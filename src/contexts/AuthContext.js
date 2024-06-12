@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/login', { email, password });
+      const response = await axios.post('http://192.168.0.119:4000/api/login', { email, password });
       document.cookie = `token=${response.data.token}; path=/;`;
       setIsAuthenticated(true);
       navigate('/dashboard');
@@ -35,8 +35,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
         return;
       }
-
-      const response = await axios.get('http://localhost:4000/api/verified', {
+      const response = await axios.get('http://192.168.0.119:4000/api/verified', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -64,9 +63,34 @@ export const AuthProvider = ({ children }) => {
     }
   }, [navigate]);
 
+  const verifyAuthSimple = useCallback(async () => {
+    try {
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+  
+      const response = await axios.get('http://192.168.0.119:4000/api/verified', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (response.data.verificado === true) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+      setIsAuthenticated(false);
+    }
+  }, []);
+
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, verifyAuth }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, verifyAuth, verifyAuthSimple }}>
       {children}
     </AuthContext.Provider>
   );
