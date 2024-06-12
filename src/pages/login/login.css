@@ -11,6 +11,7 @@
     background: linear-gradient(-45deg, #000000, #411d3b, #000000, #340668);
     background-size: 400% 400%;
     animation: gradientAnimation 15s ease infinite;
+    overflow-y: hidden;
   }
   
   @keyframes gradientAnimation {

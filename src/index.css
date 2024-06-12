@@ -1,26 +1,24 @@
-
-
 body {
   margin: 0;
   font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #232323;
-  color: whitesmoke;
+  background-color: var(--background);
+  color: var(--text);
 }
+
 :root {
-  --primary: #605DFF;
-  --primary-dark: #4a00e0;
-  --primary-light: #5DA8FF;
-  --secondary: #1D1D1D;
+  --primary: #000000;
+  --primary-dark: #3b3b3b;
+  --primary-light: #252525;
+  --secondary: #6B7280;
+  --accent: #2563EB;
+  --text: #1F2937;
+  --background: #F3F4F6;
+  --white: #FFFFFF;
   --social-background: #E9E9E9;
   --social-background-hover: #dddddd;
-  --text: #1F2346;
-  --white: #FFFFFF;
-  --violet: #8e2de2;
-  --background: #1C1C1C;
-  
 }
 
 * {
@@ -32,24 +30,22 @@ body {
 body, html {
   height: 100%;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .container {
-  margin: 0 auto; /* Centra el contenedor horizontalmente */
-  padding: 0 1rem; /* Añade padding lateral para evitar que el contenido toque los bordes de la pantalla */
-  max-width: 1200px; /* Ajusta el valor según el tamaño máximo deseado */
-  width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho disponible */
-  box-sizing: border-box; /* Incluye el padding en el ancho y alto del contenedor */
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
   margin-top: 10px;
 }
 
-.imggrande{
-
+.imggrande {
   width: 100%;
 }
