@@ -5,7 +5,6 @@ const Home = () => (
   <div className=''>
   < Navbar />
     <div className='container'>
-      <img className='imggrande' src='' />
       < AllProducts />
     </div>
   </div>

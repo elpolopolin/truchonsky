@@ -14,12 +14,18 @@
 
   
 .header {
-  width: 100vw;
-  height: var(--navbar-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--navbar-height);
+    background-color: var(--primary);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que el header esté por encima de otros elementos */
+  }
 
 .menu__wrapper {
   display: flex;
@@ -28,12 +34,12 @@
   z-index: 2;
   gap: 1.5rem;
   width: 100%;
-  max-width: 60rem;
+  max-width: 80rem;
   padding: 0px 1rem;
   align-items: center;
   height: var(--navbar-height);
-  background-color: var(--primary);
-  border-bottom: 3px solid var(--primary-dark);
+  
+ 
 }
 
 .menu__bar {
@@ -45,6 +51,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  height: var(--navbar-height);
 }
 
 .logo img {
@@ -250,7 +257,7 @@
   display: none;
   outline: none;
   border: none;
-  cursor: pointer;
+  
   background-color: transparent;
 }
 
