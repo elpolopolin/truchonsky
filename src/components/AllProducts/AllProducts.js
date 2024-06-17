@@ -3,10 +3,10 @@ import './allproducts.css'
 import ProductCard from '../Product/ProductCard';
 import axios from 'axios';
 
-const AllProducts = () => {
+const AllProducts = ({ productsPerPage }) => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 40;
+ 
 
   useEffect(() => {
     const getProducts = async () => {

@@ -265,9 +265,13 @@
   display: none;
 }
 
+
 @media (max-width: 44rem) {
   .hide {
     display: none;
+  }
+  .jai{
+    display: block;
   }
 
   .burger-menu {
@@ -297,7 +301,7 @@
     width: 1.5rem;
   }
 
-  .burguermenuDropdown {
+  .burgermenuDropdown {
     display: none;
     margin-top: 150px;
     border: 1px solid var(--gray-border);
@@ -310,7 +314,67 @@
     border-radius: 0.5rem;
   }
 
-  .burguermenuDropdown.show {
+  .burgermenuDropdown.show {
     display: flex;
   }
+}
+.mobile-menu {
+  position: fixed; /* Cambiado a fixed para que ocupe toda la pantalla */
+  height: 100%; /* 100% del alto de la pantalla */
+  top: 0;
+  right: 0;
+  width: 100%; /* 100% del ancho de la pantalla */
+  background-color: rgba(0, 0, 0, 0.9); /* Fondo negro */
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 999; /* Asegúrate de que el menú esté por encima de otros elementos */
+}
+
+.mobile-menu.visible {
+  transform: translateX(0);
+}
+
+.burger-menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.menu-items ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.menu-items ul li {
+  margin-bottom: 20px;
+}
+
+.menu-items ul li a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #fff; /* Letras blancas */
+  font-size: 18px;
+}
+
+.menu-items ul li a:hover {
+  color: rgba(255, 255, 255, 0.7); /* Letras medio blancas con menos opacidad */
+}
+.close-menu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }

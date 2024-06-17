@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import './assets/navbar.css'
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [userData, setUserData] = useState(null);
-  const { isAuthenticated, verifyAuthSimple } = useAuth();
+  const { isAuthenticated, verifyAuthSimple,logout } = useAuth();
   const [menuVisible, setMenuVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -19,7 +21,7 @@ const Navbar = () => {
           }
         });
         setUserData(response.data.user);
-        console.log(response.data.user);
+       // console.log(response.data.user);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -36,6 +38,18 @@ const Navbar = () => {
     verifyAuthSimple();
   }, [verifyAuthSimple]);
 
+  const navigateto = (place) => {
+    navigate(`/${place}`);
+  };
+  const handleLogout = () => {
+    logout(navigate);
+  };
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+  const closeMenu = () => {
+    setMenuVisible(false);
+  };
 
   return (
     <header className="header">
@@ -48,9 +62,9 @@ const Navbar = () => {
             <ul className="navigation hide">
               
               <li>
-                <a href="#devs" title="Developers">
+                <Link to="/productos">
                   Productos
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#pricing" title="Pricing">
@@ -73,7 +87,7 @@ const Navbar = () => {
             </ul>
           </nav>
         </div>
-        <div className="action-buttons hide">
+        <div className="action-buttons ">
           
         {userData ? (
           <ul className='navigation '>
@@ -92,7 +106,7 @@ const Navbar = () => {
                   <div className="icon-wrapper">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M11.5 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6.5-6v-5.5c0-3.07-2.13-5.64-5-6.32V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5v.68c-2.87.68-5 3.25-5 6.32V16l-2 2v1h17v-1l-2-2z"></path><path d="M0 0h24v24H0z" fill="none"></path></g></svg>
                   </div>
-                  <div className="item-title">
+                  <div className="item-title" onClick={() => navigateto("notifications")}>
                     <h3>Notifications</h3>
                     <p>0 Notifications</p>
                   </div>
@@ -102,14 +116,15 @@ const Navbar = () => {
                   <div className="icon-wrapper">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                   </div>
-                  <div className="item-title">
+                  
+                  <div className="item-title" onClick={() => navigateto("viewcart")}>
                     <h3>Cart</h3>
                     <p>See your cart</p>
                   </div>
                 </li>
 
                 <li>
-                <div className="icon-wrapper">
+                <div className="icon-wrapper" >
                               <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" fill="#ffffff">
                       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                       <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
@@ -127,7 +142,7 @@ const Navbar = () => {
                       </g>
                     </svg> 
                   </div>
-                  <div className="item-title">
+                  <div className="item-title" onClick={() => navigateto("dashboard")}>
                     <h3>Profile</h3>
                     <p>Manage your profile</p>
                   </div>
@@ -137,7 +152,7 @@ const Navbar = () => {
                   <div className="icon-wrapper">
                   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6 3C4.34315 3 3 4.34315 3 6V18C3 19.6569 4.34315 21 6 21H17C17.5523 21 18 20.5523 18 20C18 19.4477 17.5523 19 17 19H6C5.44772 19 5 18.5523 5 18V6C5 5.44772 5.44772 5 6 5H17C17.5523 5 18 4.55228 18 4C18 3.44772 17.5523 3 17 3H6ZM15.7071 7.29289C15.3166 6.90237 14.6834 6.90237 14.2929 7.29289C13.9024 7.68342 13.9024 8.31658 14.2929 8.70711L16.5858 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H16.5858L14.2929 15.2929C13.9024 15.6834 13.9024 16.3166 14.2929 16.7071C14.6834 17.0976 15.3166 17.0976 15.7071 16.7071L19.7071 12.7071C20.0976 12.3166 20.0976 11.6834 19.7071 11.2929L15.7071 7.29289Z" fill="#ffffff"></path> </g></svg>
                   </div>
-                  <div className="item-title">
+                  <div className="item-title" onClick={handleLogout}>
                     <h3>Logout</h3>
                     <p>AI toolkit to manage embeddings</p>
                   </div>
@@ -152,14 +167,83 @@ const Navbar = () => {
           )}
           
         </div>
-        <button aria-label="Open menu" className="burger-menu" type="button" onClick={() => setMenuVisible(!menuVisible)}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-menu-2" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M4 6l16 0" />
-            <path d="M4 12l16 0" />
-            <path d="M4 18l16 0" />
-          </svg>
-        </button>
+        <button
+        aria-label="Open menu"
+        className="burger-menu"
+        type="button"
+        onClick={toggleMenu}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="icon icon-tabler icon-tabler-menu-2"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          strokeWidth="2"
+          stroke="currentColor"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M4 6l16 0" />
+          <path d="M4 12l16 0" />
+          <path d="M4 18l16 0" />
+        </svg>
+      </button>
+
+      <div className={`mobile-menu ${menuVisible ? 'visible' : ''}`}>
+  <div className={`menu-items ${menuVisible ? 'visible' : ''}`}>
+  
+    <ul>
+      <li>
+        <Link to="/productos" onClick={toggleMenu}>
+          Productos
+        </Link>
+      </li>
+      <li>
+        <a href="#pricing" title="Pricing" onClick={toggleMenu}>
+          Ofertas
+        </a>
+      </li>
+      <li>
+        <a href="#docs" title="Docs" onClick={toggleMenu}>
+          Ayuda
+        </a>
+      </li>
+      <li>
+        <a href="#blog" title="Blog" onClick={toggleMenu}>
+          SobreNosotros
+        </a>
+      </li>
+      <li>
+      <button
+      aria-label="Close menu"
+      className="close-menu"
+      type="button"
+      onClick={toggleMenu}
+    >
+       <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="icon icon-tabler icon-tabler-x"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        strokeWidth="2"
+        stroke="currentColor"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M18 6L6 18" />
+        <path d="M6 6l12 12" />
+      </svg>
+    </button>
+      </li>
+    </ul>
+  </div>
+</div>
       </div>
      
     </header>

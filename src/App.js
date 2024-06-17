@@ -9,16 +9,20 @@ import PrivateRoute from './components/PrivateRoute';
 import VerifyAccount from './pages/VerifyAccount/VerifyAccount';
 import './App.css';
 import Signup from './pages/Signup';
+import ViewProduct from './components/ViewProduct/ViewProduct';
+import ViewCart from './pages/ViewCart/ViewCart';
+import { CartProvider } from './contexts/CartContext';
+import Productos from './pages/Productos';
 
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+      <CartProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/singup" element={<Home />} />
-          <Route path="/verifyAccount" element={<VerifyAccount />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/verifyAccount" element={<VerifyAccount />} />
           <Route path="/dashboard" element={
               <PrivateRoute>
                 <Dashboard />
@@ -32,9 +36,13 @@ function App() {
             } 
           />
           <Route path="/" element={<Home />} />
+          <Route path="/productos" element={<Productos />} />
+          <Route path="/viewproduct/:id" element={<ViewProduct />} />
+          <Route path="/viewcart" element={<ViewCart />} />
         </Routes>
-      </AuthProvider>
-    </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
+  </BrowserRouter>
   );
 }
 

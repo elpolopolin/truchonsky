@@ -1,13 +1,16 @@
 .product-card {
+  cursor: pointer;
   position: relative;
   width: 100%;
   overflow-x: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
-  font-family: 'Blackletter', serif;
+
+  
 }
 
 .product-image {
+ 
   width: 100%;
   height: auto;
   max-height: 200px;
@@ -36,7 +39,7 @@
   color: var(--text);
   padding: 10px;
   text-align: center;
-  font-family: 'Blackletter', serif;
+
 }
 
 .product-name {
@@ -64,7 +67,7 @@
   width: 100%;
   color: var(--white);
   text-align: center;
-  padding: 10px;
+  
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
@@ -79,19 +82,9 @@
   font-size: 1em;
 }
 
-.add-to-cart-button {
-  background-color: var(--primary);
-  color: var(--white);
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-family: 'Blackletter', serif;
-}
 
-.add-to-cart-button:hover {
-  background-color: var(--primary-dark);
-}
+
+
 
 @media (max-width: 768px) {
 .product-image {

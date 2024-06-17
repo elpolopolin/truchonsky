@@ -47,7 +47,7 @@ const Login = () => {
 
       <div className="login-welcome-row">
             <a href="#" title="Logo">
-            <Link to="/">   <img src={logo} alt="Logo" className="logo" /> </Link>
+            <Link to="/">   <img src={logo} alt="Logo" className="logo2" /> </Link>
             </a>
         </div>
 
