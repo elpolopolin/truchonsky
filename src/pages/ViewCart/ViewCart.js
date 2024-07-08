@@ -59,18 +59,20 @@ const ViewCart = () => {
                 </button>
               </div>
             ))}
-            {cart.length === 0 && <div className='cart-products'> <div  className='cart-product'><div className='cart-product-details'><h3>No hay productos en el carrito.</h3></div></div></div>}
+            {cart.length === 0 && <div  className='cart-product'><div className='cart-product-details'><h3>No hay productos en el carrito.</h3></div></div>}
           </div>
 
           <div className='cart-summary'>
-            <h2>Resumen de la Compra</h2>
+            <h2>Resumen de la Compra:</h2>
             <div className='cart-summary-details'>
               <div className='summary-item'>
                 <span>Total Productos:</span>
                 <span>${getTotalPrice()}</span>
               </div>
+             
               <button className='pay-button'>Pagar</button>
               <button className='clear-cart-button'>Eliminar Carrito</button>
+             
             </div>
           </div>
         </div>

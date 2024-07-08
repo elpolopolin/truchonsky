@@ -28,10 +28,18 @@ const ViewProduct = () => {
 
     fetchProduct();
   }, [id]);
+  
+  useEffect(() => {
+    if (product) {
+      document.title = `${product.nombre} | Truchonsky`; 
+    }
+  }, [product]);
+
 
   if (!product) {
     return <div>Loading...</div>;
   }
+
 
   const handleAddToCart = () => {
     addToCart(product.id); // Aquí pasamos solo el ID del producto

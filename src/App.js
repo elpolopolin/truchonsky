@@ -37,7 +37,8 @@ function App() {
           />
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<Productos />} />
-          <Route path="/viewproduct/:id" element={<ViewProduct />} />
+          <Route path="/buscarProducto/:producto" element={<Productos />} />
+          <Route path="/viewproduct/:nombre/:id" element={<ViewProduct />} />
           <Route path="/viewcart" element={<ViewCart />} />
         </Routes>
       </CartProvider>

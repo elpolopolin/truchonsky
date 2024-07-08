@@ -77,12 +77,11 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a href="#blog" title="Blog">
-                  SobreNosotros
-                </a>
+              <Link to="/viewCart">
+                  Carrito
+                  </Link>
               </li>
-
-              
+         
 
             </ul>
           </nav>

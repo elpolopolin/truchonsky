@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 
 :root {
   --text2: #F9F9F9;
@@ -47,11 +47,29 @@
   align-items: center;
 }
 
+.input-navbar {
+  border: 0.5px solid white;
+  color: white;
+  font-size: 1rem;
+  padding: 5px;
+  border-radius: 5px;
+  background: transparent;
+  transition: border-color 0.2s;
+  flex: 1; /* Para que el input ocupe todo el espacio disponible */
+}
+
+.tick-icon {
+  margin-left: 10px; /* Espacio entre el input y el icono */
+  color: white;
+  font-size: 1rem; /* Tamaño del icono */
+}
+
 .logo {
   cursor: pointer;
+ 
   display: flex;
   align-items: center;
-  height: var(--navbar-height);
+  max-height: 4rem;
 }
 
 .logo img {
