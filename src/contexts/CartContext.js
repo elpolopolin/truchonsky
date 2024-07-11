@@ -6,27 +6,30 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart');
     try {
-      return savedCart ? JSON.parse(savedCart) : []; // Parse and default to empty array
+      return savedCart ? JSON.parse(savedCart) : [];
     } catch (error) {
       console.error('Error parsing cart from localStorage:', error);
-      return []; // Default to empty array on parsing error
+      return [];
     }
   });
 
-  const [productCount, setProductCount] = useState({});
-
-  useEffect(() => {
-    // Initialize productCount from cart
-    const initialProductCount = {};
-    cart.forEach((productId) => {
-      initialProductCount[productId] = initialProductCount[productId] ? initialProductCount[productId] + 1 : 1;
-    });
-    setProductCount(initialProductCount);
-  }, [cart]);
+  const [productCount, setProductCount] = useState(() => {
+    const savedProductCount = localStorage.getItem('productCount');
+    try {
+      return savedProductCount ? JSON.parse(savedProductCount) : {};
+    } catch (error) {
+      console.error('Error parsing product count from localStorage:', error);
+      return {};
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
+
+  useEffect(() => {
+    localStorage.setItem('productCount', JSON.stringify(productCount));
+  }, [productCount]);
 
   const addToCart = (productId) => {
     setCart((prevCart) => {
@@ -35,6 +38,7 @@ const CartProvider = ({ children }) => {
       }
       return prevCart;
     });
+
     setProductCount((prevCount) => ({
       ...prevCount,
       [productId]: (prevCount[productId] || 0) + 1,
@@ -42,7 +46,6 @@ const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item !== productId));
     setProductCount((prevCount) => {
       const updatedCount = { ...prevCount };
       if (updatedCount[productId] > 1) {
@@ -51,6 +54,13 @@ const CartProvider = ({ children }) => {
         delete updatedCount[productId];
       }
       return updatedCount;
+    });
+
+    setCart((prevCart) => {
+      if (productCount[productId] === 1) {
+        return prevCart.filter((item) => item !== productId);
+      }
+      return prevCart;
     });
   };
 

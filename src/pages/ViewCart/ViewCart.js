@@ -6,12 +6,13 @@ import './ViewCart.css'; // Asegúrate de tener tu archivo CSS para estilos pers
 
 const ViewCart = () => {
   const { cart, removeFromCart, productCount } = useContext(CartContext);
+  console.log(productCount);
   const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
     const fetchCartProducts = async () => {
       const productRequests = cart.map((productId) =>
-        axios.get(`http://192.168.0.119:4000/api/getProduct/${productId}`)
+        axios.get(`http://192.168.0.34:4000/api/getProduct/${productId}`)
       );
       try {
         const responses = await Promise.all(productRequests);
@@ -59,7 +60,7 @@ const ViewCart = () => {
                 </button>
               </div>
             ))}
-            {cart.length === 0 && <div  className='cart-product'><div className='cart-product-details'><h3>No hay productos en el carrito.</h3></div></div>}
+            
           </div>
 
           <div className='cart-summary'>

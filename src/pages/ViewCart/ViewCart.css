@@ -13,6 +13,9 @@
     flex: 1;
     height: 75vh;
     overflow-y: auto;
+    background-color: #ffffff  ;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
   }
   
   .cart-product-list {
@@ -26,8 +29,14 @@
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #000000;
     padding: 10px;
     margin-bottom: 10px;
+  }
+  .cart-product:hover {
+    background-color: rgba(87, 87, 87, 0.1);
+    
+    cursor: pointer;
   }
   
   .cart-product-image {
@@ -74,6 +83,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    height: 75vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
