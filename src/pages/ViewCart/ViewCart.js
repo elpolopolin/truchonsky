@@ -6,8 +6,8 @@ import './ViewCart.css'; // Asegúrate de tener tu archivo CSS para estilos pers
 
 const ViewCart = () => {
   const { cart, removeFromCart, productCount } = useContext(CartContext);
-  console.log(productCount);
   const [cartProducts, setCartProducts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     const fetchCartProducts = async () => {
@@ -28,7 +28,6 @@ const ViewCart = () => {
     }
   }, [cart]);
 
- 
   const getTotalPrice = () => {
     let totalPrice = 0;
     cartProducts.forEach((product) => {
@@ -38,11 +37,53 @@ const ViewCart = () => {
     return totalPrice;
   };
 
+  const createCheckoutButton = (preferenceId) => {
+    const mp = new window.MercadoPago('APP_USR-faf28c5c-0434-4f3b-92e3-67373bf5c5f3', { // OCULTAR!!!
+      locale: 'es-AR' 
+    });
+
+    mp.checkout({
+      preference: {
+        id: preferenceId
+      },
+      render: {
+        container: '.mercado-pago-button', // Clase CSS en la que se renderizará el botón
+        label: 'Pagar con Mercado Pago', // Texto del botón
+      }
+    });
+  };
+
+  const handlePaymentClick = async () => {
+    const cartData = cartProducts.map((product) => ({
+      id: product.id,
+      count: productCount[product.id] || 0,
+    }));
+    try {
+      const response = await fetch(`http://192.168.0.34:4000/create_preference`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartData }),
+      });
+
+      const preference = await response.json();
+      createCheckoutButton(preference.id);
+      console.log(preference)
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error creating preference:', error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <>
       <Navbar />
       <div className='container'>
-      
         <div className='cart-layout'>
           <div className='cart-products'>
             {cartProducts.map((product) => (
@@ -60,7 +101,6 @@ const ViewCart = () => {
                 </button>
               </div>
             ))}
-            
           </div>
 
           <div className='cart-summary'>
@@ -70,15 +110,23 @@ const ViewCart = () => {
                 <span>Total Productos:</span>
                 <span>${getTotalPrice()}</span>
               </div>
-             
-              <button className='pay-button'>Pagar</button>
+              <button className='pay-button' onClick={handlePaymentClick}>Pagar</button>
               <button className='clear-cart-button'>Eliminar Carrito</button>
-             
             </div>
           </div>
         </div>
       </div>
-     
+
+      {showModal && (
+        <div className='modal'>
+          <div className='modal-content'>
+            <span className='close-button' onClick={handleCloseModal}>&times;</span>
+            <h2>Elige un método de pago</h2>
+            <div className='mercado-pago-button'></div> {/* El botón de Mercado Pago se renderizará aquí */}
+            <button className='payment-button transferencia'>Transferencia Bancaria</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
