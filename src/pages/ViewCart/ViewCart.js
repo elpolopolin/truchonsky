@@ -12,7 +12,7 @@ const ViewCart = () => {
   useEffect(() => {
     const fetchCartProducts = async () => {
       const productRequests = cart.map((productId) =>
-        axios.get(`http://192.168.0.132:4000/api/getProduct/${productId}`)
+        axios.get(`http://192.168.0.34:4000/api/getProduct/${productId}`)
       );
       try {
         const responses = await Promise.all(productRequests);
@@ -61,7 +61,7 @@ const ViewCart = () => {
     }));
     
     try {
-      const response = await fetch(`http://192.168.0.132:4000/create_preference`, {
+      const response = await fetch(`http://192.168.0.34:4000/create_preference`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

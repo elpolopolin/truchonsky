@@ -15,7 +15,7 @@ const Navbar = () => {
     const fetchUserData = async () => {
       try {
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-        const response = await axios.get('http://192.168.0.132:4000/api/userData', {
+        const response = await axios.get('http://192.168.0.34:4000/api/userData', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -56,7 +56,7 @@ const Navbar = () => {
       <div className="menu__wrapper">
         <div className="menu__bar">
           <Link to="/" title="Home" aria-label="home" className="logo">
-            <img src="http://192.168.0.132:3000/img/logowhite.png" alt="logo" />
+            <img src="http://192.168.0.34:4000/img/logowhite.png" alt="logo" />
           </Link>
           <nav>
             <ul className="navigation hide">

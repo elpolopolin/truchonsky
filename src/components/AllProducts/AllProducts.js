@@ -20,7 +20,7 @@
       const fetchProducts = async () => {
         try {
           if (productoAbuscar) {
-            const response = await axios.get('http://192.168.0.132:4000/api/productSearch', { params: { nombre: productoAbuscar } });
+            const response = await axios.get('http://192.168.0.34:4000/api/productSearch', { params: { nombre: productoAbuscar } });
             if (response.data.status === 'ok') {
               setProducts(response.data.products);
               setErrorMessage('');
@@ -29,7 +29,7 @@
               setErrorMessage(response.data.message);
             }
           } else {
-            const response = await axios.get('http://192.168.0.132:4000/api/getProducts');
+            const response = await axios.get('http://192.168.0.34:4000/api/getProducts');
             setProducts(response.data.AllProducts);
             setErrorMessage('');
           }
