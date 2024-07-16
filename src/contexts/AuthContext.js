@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://192.168.0.34:4000/api/login', { email, password });
+      const response = await axios.post('http://192.168.0.132:4000/api/login', { email, password });
       document.cookie = `token=${response.data.token}; path=/;`;
       setIsAuthenticated(true);
       navigate('/dashboard');
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
         navigate('/login');
         return;
       }
-      const response = await axios.get('http://192.168.0.34:4000/api/verified', {
+      const response = await axios.get('http://192.168.0.132:4000/api/verified', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
         return;
       }
   
-      const response = await axios.get('http://192.168.0.34:4000/api/verified', {
+      const response = await axios.get('http://192.168.0.132:4000/api/verified', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

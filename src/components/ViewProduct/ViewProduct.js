@@ -14,7 +14,7 @@ const ViewProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://192.168.0.34:4000/api/getProduct/${id}`);
+        const response = await axios.get(`http://192.168.0.132:4000/api/getProduct/${id}`);
         const data = response.data;
         if (data.status === 'ok') {
           setProduct(data.producto[0]);

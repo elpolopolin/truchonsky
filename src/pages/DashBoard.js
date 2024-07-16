@@ -16,7 +16,7 @@ const handleLogout = () => {
     const fetchUserData = async () => {
       try {
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
-        const response = await axios.get('http://192.168.0.34:4000/api/userData', {
+        const response = await axios.get('http://192.168.0.132:4000/api/userData', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

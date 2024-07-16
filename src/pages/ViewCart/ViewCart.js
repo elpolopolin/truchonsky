@@ -12,7 +12,7 @@ const ViewCart = () => {
   useEffect(() => {
     const fetchCartProducts = async () => {
       const productRequests = cart.map((productId) =>
-        axios.get(`http://192.168.0.34:4000/api/getProduct/${productId}`)
+        axios.get(`http://192.168.0.132:4000/api/getProduct/${productId}`)
       );
       try {
         const responses = await Promise.all(productRequests);
@@ -54,22 +54,24 @@ const ViewCart = () => {
   };
 
   const handlePaymentClick = async () => {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
     const cartData = cartProducts.map((product) => ({
       id: product.id,
       count: productCount[product.id] || 0,
     }));
+    
     try {
-      const response = await fetch(`http://192.168.0.34:4000/create_preference`, {
+      const response = await fetch(`http://192.168.0.132:4000/create_preference`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ cartData }),
       });
-
+  
       const preference = await response.json();
       createCheckoutButton(preference.id);
-      console.log(preference)
       setShowModal(true);
     } catch (error) {
       console.error('Error creating preference:', error);

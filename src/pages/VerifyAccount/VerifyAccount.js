@@ -15,7 +15,7 @@ const VerifyAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.0.34:4000/verifyOTP', {
+      const response = await axios.post('http://192.168.0.132:4000/verifyOTP', {
         userId,
         otp,
       });
@@ -32,7 +32,7 @@ const VerifyAccount = () => {
 
   const handleResendOTP = async () => {
     try {
-      const response = await axios.post('http://192.168.0.34:4000/resendOTP', { // corregir esto logica de que solo el usuario mismo se pueda reenviar los cosos si esta logeado.
+      const response = await axios.post('http://192.168.0.132:4000/resendOTP', { // corregir esto logica de que solo el usuario mismo se pueda reenviar los cosos si esta logeado.
         userId,
       });
       console.log(response.data);
