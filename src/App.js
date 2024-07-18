@@ -13,6 +13,9 @@ import ViewProduct from './components/ViewProduct/ViewProduct';
 import ViewCart from './pages/ViewCart/ViewCart';
 import { CartProvider } from './contexts/CartContext';
 import Productos from './pages/Productos';
+import Miscompras from './pages/Miscompras/Miscompras';
+import Footer from './components/footer/Footer';
+
 
 function App() {
   return (
@@ -40,7 +43,9 @@ function App() {
           <Route path="/buscarProducto/:producto" element={<Productos />} />
           <Route path="/viewproduct/:nombre/:id" element={<ViewProduct />} />
           <Route path="/viewcart" element={<ViewCart />} />
+          <Route path="/miscompras" element={<Miscompras />} />
         </Routes>
+        <Footer />
       </CartProvider>
     </AuthProvider>
   </BrowserRouter>
