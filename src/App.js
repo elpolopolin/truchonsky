@@ -14,8 +14,8 @@ import ViewCart from './pages/ViewCart/ViewCart';
 import { CartProvider } from './contexts/CartContext';
 import Productos from './pages/Productos';
 import Miscompras from './pages/Miscompras/Miscompras';
-import Footer from './components/footer/Footer';
-
+import Footer from './components/footer/Footer.js';
+import MiCompra from './components/MiCompra/MiCompra.js';
 
 function App() {
   return (
@@ -42,6 +42,7 @@ function App() {
           <Route path="/productos" element={<Productos />} />
           <Route path="/buscarProducto/:producto" element={<Productos />} />
           <Route path="/viewproduct/:nombre/:id" element={<ViewProduct />} />
+          <Route path="/vercompra/:id" element={<MiCompra />} />
           <Route path="/viewcart" element={<ViewCart />} />
           <Route path="/miscompras" element={<Miscompras />} />
         </Routes>

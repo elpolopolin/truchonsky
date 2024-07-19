@@ -1,0 +1,141 @@
+.progreso-compra {
+    margin-top: 8%;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+  }
+  
+  .progreso-compra h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+  }
+  
+  .progreso-steps {
+    display: flex;
+    gap: 2%;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .step {
+    width: 100%;
+    max-width: 250px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    background: #e0e0e0;
+    position: relative;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .step.completed {
+    background: #4caf50;
+    color: white;
+  }
+  
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -20px;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 4px;
+    background: #e0e0e0;
+  }
+  
+  .step.completed:not(:last-child)::after {
+    background: #4caf50;
+  }
+  
+  @media (max-width: 768px) {
+    .progreso-steps {
+      flex-direction: column;
+    }
+  
+    .step {
+      margin-bottom: 10px;
+    }
+  
+    .step:not(:last-child)::after {
+      content: none;
+    }
+  }
+  
+  .compra-details {
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #ffffff;
+  }
+  
+  .compra-details h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+  }
+  
+  .table-container {
+    margin-top: 5px;
+    width: 100%;
+    overflow-x: auto;
+    background: #ffffff;
+  }
+  
+  .product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .product-table th, .product-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .product-table th {
+    background: #f4f4f4;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .product-table td {
+    vertical-align: middle;
+  }
+  
+  .product-table img {
+    max-width: 100px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .product-table .item-name {
+    font-weight: bold;
+  }
+  
+  .product-table .item-price {
+    color: #4caf50;
+  }
+  
+  .product-table .item-quantity {
+    text-align: center;
+  }
+  
+  .error-message {
+    color: red;
+    background: #fdd;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+  }

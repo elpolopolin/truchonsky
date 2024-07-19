@@ -8,6 +8,7 @@ const ViewCart = () => {
   const { cart, removeFromCart, productCount } = useContext(CartContext);
   const [cartProducts, setCartProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
 
   useEffect(() => {
     const fetchCartProducts = async () => {
@@ -39,7 +40,7 @@ const ViewCart = () => {
 
   const createCheckoutButton = (preferenceId) => {
     const mp = new window.MercadoPago('APP_USR-faf28c5c-0434-4f3b-92e3-67373bf5c5f3', { // OCULTAR!!!
-      locale: 'es-AR' 
+      locale: 'es-AR'
     });
 
     mp.checkout({
@@ -59,7 +60,7 @@ const ViewCart = () => {
       id: product.id,
       count: productCount[product.id] || 0,
     }));
-    
+    console.log(cartData)
     try {
       const response = await fetch(`http://192.168.0.34:4000/create_preference`, {
         method: 'POST',
@@ -69,12 +70,24 @@ const ViewCart = () => {
         },
         body: JSON.stringify({ cartData }),
       });
-  
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        throw new Error(errorResponse.message || errorResponse.error || 'Error al crear la preferencia');
+      }
+
       const preference = await response.json();
       createCheckoutButton(preference.id);
       setShowModal(true);
+      setErrorMessage('');
     } catch (error) {
+      setErrorMessage(error.message || error.error);
       console.error('Error creating preference:', error);
+      
+      // Configurar el mensaje de error para desaparecer después de 5 segundos
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
     }
   };
 
@@ -85,6 +98,7 @@ const ViewCart = () => {
   return (
     <>
       <Navbar />
+      
       <div className='container'>
         <div className='cart-layout'>
           <div className='cart-products'>
@@ -112,6 +126,7 @@ const ViewCart = () => {
                 <span>Total Productos:</span>
                 <span>${getTotalPrice()}</span>
               </div>
+              {errorMessage && <div className="error-message">{errorMessage}</div>} {/* Mostrar mensaje de error */}
               <button className='pay-button' onClick={handlePaymentClick}>Pagar</button>
               <button className='clear-cart-button'>Eliminar Carrito</button>
             </div>

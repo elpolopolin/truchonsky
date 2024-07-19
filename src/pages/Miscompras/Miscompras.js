@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CardCompra from '../../components/CardCompra/CardCompra ';
 import './Miscompras.css';
 import Navbar from '../../components/Navbar/Navbar';
+//import CardCompra from "../../components/CardCompra/CardCompra.js"
 
 const comprasPerPage = 4;
 
@@ -16,46 +16,26 @@ const Miscompras = () => {
     if (savedPage) {
       setCurrentPage(Number(savedPage));
     }
-    
     const fetchCompras = async () => {
-      const exampleCompras = [
-        {
-          id: 1,
-          producto: 'Producto 1',
-          cantidad: 2,
-          precioTotal: 500,
-          fecha: '2023-07-01',
-        },
-        {
-          id: 2,
-          producto: 'Producto 2',
-          cantidad: 1,
-          precioTotal: 300,
-          fecha: '2023-07-05',
-        },
-        {
-          id: 3,
-          producto: 'Producto 3',
-          cantidad: 4,
-          precioTotal: 800,
-          fecha: '2023-07-10',
-        },
-        {
-          id: 4,
-          producto: 'Producto 4',
-          cantidad: 1,
-          precioTotal: 150,
-          fecha: '2023-07-15',
-        },
-        {
-          id: 5,
-          producto: 'Producto 5',
-          cantidad: 3,
-          precioTotal: 450,
-          fecha: '2023-07-20',
-        },
-      ];
-      setCompras(exampleCompras);
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
+      try {
+        const response = await fetch('http://192.168.0.34:4000/verComprasUser', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Error en la respuesta de la API');
+        }
+        const data = await response.json();
+        setCompras(data.comprasUser || []); // Asegúrate de que comprasUser exista
+        console.log(data);
+      } catch (error) {
+        console.error('Error: ', error);
+        setCompras([]); // Establece compras como un array vacío en caso de error
+      }
     };
 
     fetchCompras();
@@ -74,6 +54,17 @@ const Miscompras = () => {
     setCurrentPage(pageNumber);
     localStorage.setItem('currentPage', pageNumber);
   };
+  const formatearFecha = (fecha) => {
+    const date = new Date(fecha);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+  const verCompra = (id) =>{
+    navigate(`/verCompra/${id}`);
+  }
 
   return (
     <>
@@ -83,7 +74,12 @@ const Miscompras = () => {
           <h2>Mis compras</h2>
           <div className="compras-lista">
             {currentCompras.map((compra) => (
-              <CardCompra key={compra.id} compra={compra} />
+                <div onClick={() => verCompra(compra.payment_id)} className="card-compra">
+                <h3>Compra #{compra.payment_id}</h3>
+                <p><strong>Producto/s:</strong> </p>
+                <p><strong>Precio Total:</strong> ${compra.totalCompra}</p>
+                <p><strong>Fecha:</strong> {formatearFecha(compra.fecha_procesado)}</p>
+              </div>
             ))}
           </div>
           {pageNumbers.length > 1 && (
