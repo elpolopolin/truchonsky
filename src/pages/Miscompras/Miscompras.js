@@ -19,7 +19,7 @@ const Miscompras = () => {
     const fetchCompras = async () => {
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
       try {
-        const response = await fetch('http://192.168.0.34:4000/verComprasUser', {
+        const response = await fetch('https://skilled-obviously-earwig.ngrok-free.app/verComprasUser', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

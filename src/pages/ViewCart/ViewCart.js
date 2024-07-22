@@ -13,7 +13,7 @@ const ViewCart = () => {
   useEffect(() => {
     const fetchCartProducts = async () => {
       const productRequests = cart.map((productId) =>
-        axios.get(`http://192.168.0.34:4000/api/getProduct/${productId}`)
+        axios.get(`https://skilled-obviously-earwig.ngrok-free.app/api/getProduct/${productId}`)
       );
       try {
         const responses = await Promise.all(productRequests);
@@ -62,7 +62,7 @@ const ViewCart = () => {
     }));
     console.log(cartData)
     try {
-      const response = await fetch(`http://192.168.0.34:4000/create_preference`, {
+      const response = await fetch(`https://skilled-obviously-earwig.ngrok-free.app/create_preference`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

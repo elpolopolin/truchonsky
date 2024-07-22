@@ -14,7 +14,7 @@ const MiCompra = () => {
       const token = document.cookie.replace(/(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/, "$1");
 
       try {
-        const response = await axios.get(`http://192.168.0.34:4000/verCompra/${id}`, {
+        const response = await axios.get(`https://skilled-obviously-earwig.ngrok-free.app/verCompra/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

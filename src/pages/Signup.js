@@ -24,7 +24,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://192.168.0.34:4000/api/register', {
+      const response = await axios.post('https://skilled-obviously-earwig.ngrok-free.app/api/register', {
         username,
         email,
         password,
