@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: calc(50% - 20px);
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        li img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        li span {
+            flex: 1;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            margin-left: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+        .stock-button {
+            background-color: #1059f5;
+            margin-left: 10px;
+        }
+        .stock-button:hover{
+            background-color: #0034a5;
+        }
+        @media screen and (max-width: 800px) {
+            .container {
+                width: calc(100% - 30px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Productos</h1>
+
+        <input type="text" id="searchInput" placeholder="Buscar productos...">
+        <button onclick="searchProducts()">Buscar</button>
+
+        <ul id="productList">
+            <% allproducts.forEach(product => { %>
+                <li>
+                    <p><%= product.id %>.</p>
+                    <img src="<%= product.imagen %>" alt="<%= product.nombre %>">
+                    <span><%= product.nombre %></span>
+                    <span>Stock: <%= product.stock_disponible %></span>
+                    <span>Precio: <%= product.precio %> $</span>
+                    <span>
+                        <button class="stock-button" onclick="addStockProduct('<%= product.id %>', '<%= product.stock_disponible %>')">Ver Stock</button>
+                    </span>
+                    <span>
+                        <button class="delete-button" onclick="deleteProduct('<%= product.id %>')">Eliminar</button>
+                    </span>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+    <div class="container">
+        <h1>Añadir Nuevo Producto</h1>
+        <form action="/api/admin/crearProducto" method="POST">
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div>
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" required></textarea>
+            </div>
+            <div>
+                <label for="imagen">URL de la Imagen:</label>
+                <input type="text" id="imagen" name="imagen" required>
+            </div>
+            <div>
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" name="precio" step="0.01" required>
+            </div>
+            <div>
+                <label for="categoria">Categoría:</label>
+                <select id="categoria" name="categoria" required>
+                    <% categorias.forEach(categoria => { %>
+                        <option value="<%= categoria.id %>"><%= categoria.nombre_categoria %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <button type="submit">Añadir Producto</button>
+        </form>
+    </div>
+
+    <!-- Modal para añadir stock -->
+    <div id="stockModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:10px; width:300px; text-align:center;">
+            <h2>Añadir Stock</h2>
+            <p>Stock actual: <span id="currentStock"></span></p>
+            <input type="number" id="newStock" placeholder="Cantidad a añadir">
+            <button onclick="submitStock()">Agregar</button>
+            <button class="delete-button" onclick="closeStockModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        function searchProducts() {
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            var items = document.getElementById("productList").getElementsByTagName("li");
+
+            Array.from(items).forEach(item => {
+                var productName = item.getElementsByTagName("span")[0].innerText.toLowerCase();
+                if (productName.includes(input)) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+
+        function deleteProduct(productId) {
+            fetch('/api/admin/deleteProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productoId: productId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Error al eliminar el producto');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        let currentProductId;
+
+        function addStockProduct(productId, currentStock) {
+            currentProductId = productId;
+            document.getElementById('currentStock').innerText = currentStock;
+            document.getElementById('stockModal').style.display = 'flex';
+        }
+
+        function submitStock() {
+            const newStock = document.getElementById('newStock').value;
+
+            fetch('/api/admin/agregarStockProducto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productoId: currentProductId, cantidad: newStock })
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Error al agregar stock');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function closeStockModal() {
+            document.getElementById('stockModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

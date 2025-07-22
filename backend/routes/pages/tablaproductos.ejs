@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 100px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            overflow-y: auto;
+            max-height: 400px;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        li img {
+            width: 100px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        li span {
+            flex: 1;
+        }
+
+        .delete-button {
+            background-color: #f44336;
+            margin-left: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Productos</h1>
+
+        <input type="text" id="searchInput" placeholder="Buscar productos...">
+        <button onclick="searchProducts()">Buscar</button>
+
+        <ul id="productList">
+            <% allproducts.forEach(product => { %>
+                <li>
+                    <img src="<%= product.imagen %>" alt="<%= product.nombre %>">
+                    <span><%= product.nombre %></span>
+                    <button class="delete-button" onclick="deleteProduct('<%= product.id %>')">Eliminar</button>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+
+    <script>
+        function searchProducts() {
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            var items = document.getElementById("productList").getElementsByTagName("li");
+            
+            Array.from(items).forEach(item => {
+                var productName = item.getElementsByTagName("span")[0].innerText.toLowerCase();
+                if (productName.includes(input)) {
+                    item.style.display = "flex";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+
+        function deleteProduct(productId) {
+            // Aquí puedes enviar una solicitud para eliminar el producto con el ID proporcionado
+            // Puedes usar fetch o cualquier otra forma de enviar solicitudes HTTP
+            console.log("Eliminar producto con ID:", productId);
+        }
+    </script>
+</body>
+</html>
